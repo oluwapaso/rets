@@ -468,7 +468,8 @@ var Client = class {
         if (typeof this.actions.logout !== "undefined") {
           const request = new Request_default();
           try {
-            request.request(this.url + this.actions.logout, this.getRequestConfig()).then(() => {
+            //request.request(this.url + this.actions.logout, this.getRequestConfig()).then(() => {
+            request.request(this.actions.logout, this.getRequestConfig()).then(() => {
               resolve(true);
             }).catch((error) => {
               const errorMessage = requestError_default(error, "There was an unknown error while logging out");
