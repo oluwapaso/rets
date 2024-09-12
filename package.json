@@ -1,0 +1,55 @@
+{
+  "name": "@aptuitiv/rets-client",
+  "version": "0.2.0",
+  "description": "NodeJS library for interfacing with RETS servers",
+  "source": "src/index.ts",
+  "main": "dist/index.js",
+  "type": "module",
+  "engines": {
+    "node": ">= 16"
+  },
+  "scripts": {
+    "build": "node scripts/build.js",
+    "lint": "eslint --fix --ext .js,.ts .",
+    "test": "mocha",
+    "ts-build": "tsc",
+    "ts-dev": "tsc -w",
+    "watch": "node scripts/watch.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aptuitiv/rets-client3.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/aptuitiv/rets-client3/issues"
+  },
+  "homepage": "https://github.com/aptuitiv/rets-client3#readme",
+  "devDependencies": {
+    "@types/chai": "^4.3.3",
+    "@types/dicer": "^0.2.2",
+    "@types/mocha": "^9.1.1",
+    "@types/stream-buffers": "^3.0.4",
+    "@types/tough-cookie": "^4.0.2",
+    "@typescript-eslint/eslint-plugin": "^5.36.2",
+    "@typescript-eslint/parser": "^5.36.2",
+    "chai": "^4.3.6",
+    "chalk": "^5.0.1",
+    "esbuild": "^0.15.7",
+    "esbuild-plugin-eslint": "^0.1.1",
+    "eslint": "^8.23.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "log-symbols": "^5.1.0",
+    "mocha": "^10.0.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.8.2"
+  },
+  "dependencies": {
+    "axios": "^0.27.2",
+    "axios-cookiejar-support": "^4.0.3",
+    "dicer": "^0.3.1",
+    "fast-xml-parser": "^4.0.9",
+    "stream-buffers": "^3.0.2",
+    "tough-cookie": "^4.1.2"
+  }
+}

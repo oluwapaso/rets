@@ -1,0 +1,10 @@
+{
+    "include": ["src/**/*"],
+    "compilerOptions": {
+        "allowSyntheticDefaultImports": true,
+        "module": "esnext",
+        "moduleResolution": "node",
+        "target": "es6",
+        "outDir": "ts-out",
+    }
+}
