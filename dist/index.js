@@ -425,7 +425,8 @@ var Client = class {
             requestConfig.headers.Accept = GetObjectHelper_default.getAcceptHeader(options);
             requestConfig.responseType = "stream";
             const request = new Request_default();
-            request.request(this.url + this.actions.getobject, requestConfig).then((response) => __async(this, null, function* () {
+            //request.request(this.url + this.actions.getobject, requestConfig).then((response) => __async(this, null, function* () {
+            request.request(this.actions.getobject, requestConfig).then((response) => __async(this, null, function* () {
               if (typeof response.headers["content-type"] !== "undefined") {
                 const headerContentType = response.headers["content-type"];
                 if (headerContentType.includes("multipart")) {
