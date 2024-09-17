@@ -1,5 +1,5 @@
 {
-  "name": "@aptuitiv/rets-client",
+  "name": "@oluwapaso/rets-client",
   "version": "0.2.0",
   "description": "NodeJS library for interfacing with RETS servers",
   "source": "src/index.ts",
@@ -18,13 +18,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/aptuitiv/rets-client3.git"
+    "url": "git+https://github.com/oluwapaso/rets.git"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/aptuitiv/rets-client3/issues"
+    "url": "https://github.com/oluwapaso/rets/issues"
   },
-  "homepage": "https://github.com/aptuitiv/rets-client3#readme",
+  "homepage": "https://github.com/oluwapaso/rets#readme",
   "devDependencies": {
     "@types/chai": "^4.3.3",
     "@types/dicer": "^0.2.2",
