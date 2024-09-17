@@ -484,6 +484,75 @@ var Client = class {
       });
     });
   }
+
+  search(searchType, resourceType, query, options) {
+    return __async(this, null, function* () {
+      return new Promise((resolve, reject) => {
+        if (typeof this.actions.search !== "undefined") {
+          
+          try {
+
+            const requestConfig = this.getRequestConfig();
+            const params = {
+              SearchType: searchType,
+              Class: resourceType,
+              Query: query,
+              Count: 1,
+              Format: options.Format || 'COMPACT', // Default to 'COMPACT-DECODED' //COMPACT //COMPACT-DECODED
+              Limit: options.Limit || 150, // Default limit to 10 if not provided
+              Offset: options.Offset || 0, // Default offset to 0 if not provided
+            };
+
+            if (requestConfig.method === "GET") {
+              requestConfig.params = params;
+            } else {
+              requestConfig.data = params;
+            }
+            requestConfig.headers.Accept = GetObjectHelper_default.getAcceptHeader(options);
+            requestConfig.responseType = "stream";
+
+            const request = new Request_default();
+            console.log("In search with:::");
+            request.request(this.actions.search, requestConfig).then((response) => __async(this, null, function* () {
+              if (typeof response.headers["content-type"] !== "undefined") {
+
+                const headerContentType = response.headers["content-type"];
+                if (headerContentType.includes("multipart")) {
+                  GetObjectHelper_default.processMultiPart(response, headerContentType).then((result) => {
+                    resolve(result);
+                  }).catch((error) => {
+                    reject(new Error(error));
+                  });
+                } else if (headerContentType.includes("text/xml")) {
+                  GetObjectHelper_default.processXmlResponse(response).then((result) => {
+                    resolve(result);
+                  }).catch((error) => {
+                    reject(new Error(error));
+                  });
+                } else {
+                  GetObjectHelper_default.processMediaResponse(response, headerContentType).then((result) => {
+                    resolve(result);
+                  }).catch((error) => {
+                    reject(new Error(error));
+                  });
+                }
+              }
+            })).catch((error) => {
+              const errorMessage = requestError_default(error, "There was an unknown error while performing the search");
+              reject(new Error(errorMessage));
+            });
+
+          } catch (error) {
+            reject(error);
+          }
+
+        } else {
+          reject(new Error("The logout action is not defined. Make sure that you log in first."));
+        }
+      });
+    });
+  }
+
 };
 var Client_default = Client;
 
