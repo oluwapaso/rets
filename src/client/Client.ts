@@ -401,6 +401,97 @@ class Client {
     });
   }
 
+
+  /**
+   * Gets one or more objects
+   *
+   * @param {string} resourceType The resource type that the object is for. "Property" is the usual value.
+   * @param {string} type The type of object to get
+   * @param {string|object|Array} ids The ids information
+   * @param {object} options Options for the request
+   * @returns {Promise}
+   */
+  async search(searchType: string, resourceType: string, query: string, options?: any): Promise<GetObjectResponse> {
+    return new Promise((resolve, reject) => {
+      if (typeof this.actions.getobject !== 'undefined') {
+        try {
+          const requestConfig = this.getRequestConfig();
+
+          // Set the request parameters
+          const params = {
+            SearchType: searchType,
+            Class: resourceType,
+            Query: query,
+            Count: 1,
+            Format: options.Format || 'COMPACT', // Default to 'COMPACT-DECODED' //COMPACT //COMPACT-DECODED
+            Limit: options.Limit || 150, // Default limit to 10 if not provided
+            Offset: options.Offset || 0, // Default offset to 0 if not provided
+          };
+
+          if (requestConfig.method === 'GET') {
+            // GET request
+            requestConfig.params = params;
+          } else {
+            // POST request
+            requestConfig.data = params;
+          }
+
+          // Set the request headers
+          requestConfig.headers.Accept = GetObjectHelper.getAcceptHeader(options);
+
+          requestConfig.responseType = 'stream';
+
+          // Get the object(s)
+          const request = new Request();
+          console.log("In search with::::::");
+          request.request(this.actions.search, requestConfig)
+            .then(async (response) => {
+              if (typeof response.headers['content-type'] !== 'undefined') {
+                const headerContentType = response.headers['content-type'];
+                if (headerContentType.includes('multipart')) {
+                  GetObjectHelper.processMultiPart(response, headerContentType)
+                    .then((result) => {
+                      resolve(result);
+                    })
+                    .catch((error) => {
+                      reject(new Error(error));
+                    });
+                } else if (headerContentType.includes('text/xml')) {
+                  // Process the response as XML
+                  GetObjectHelper.processXmlResponse(response)
+                    .then((result) => {
+                      resolve(result);
+                    })
+                    .catch((error) => {
+                      reject(new Error(error));
+                    });
+                } else {
+                  // This is likely an image.
+                  GetObjectHelper.processMediaResponse(response, headerContentType)
+                    .then((result) => {
+                      resolve(result);
+                    })
+                    .catch((error) => {
+                      reject(new Error(error));
+                    });
+                }
+              }
+            })
+            .catch((error) => {
+              // There was an error while making the request. The error would be an axios error
+              const errorMessage = handleRequestError(error, 'There was an unknown error while getting the objects');
+              reject(new Error(errorMessage));
+            });
+        } catch (error) {
+          // There was an error making the request
+          reject(error);
+        }
+      } else {
+        reject(new Error('The get object action is not defined. Make sure that you log in first.'));
+      }
+    });
+  }
+
   /**
    * Handles logging the session out
    *
